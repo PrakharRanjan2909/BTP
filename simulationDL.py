@@ -9,7 +9,7 @@ import os
 import csv
 from keras.models import Sequential, Model
 from keras.layers import Lambda, Activation, Input, Dense, Dropout, SimpleRNN, Flatten, \
-    LSTM, GRU, Bidirectional, Layer, Permute, Reshape, Multiply, RepeatVector, Dot, Concatenate, merge
+    LSTM, GRU, Bidirectional, Layer, Permute, Reshape, Multiply, RepeatVector, Dot, Concatenate
 from keras import optimizers
 import keras.backend as K
 from sklearn.preprocessing import MinMaxScaler
