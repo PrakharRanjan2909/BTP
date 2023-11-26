@@ -11,7 +11,7 @@ import matplotlib.dates as mdates
 font1 = {'family': 'Microsoft YaHei',
          'weight': 'normal',
          'size': 13}
-plt.style.use(['science','no-latex'])
+# plt.style.use(['science','no-latex'])
 def get_sent_recv(s):
     # 1(Sent) + 1(Recv
     position_jiahao = s.find('+')
