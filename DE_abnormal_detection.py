@@ -332,10 +332,10 @@ if __name__=='__main__':
         for jj in range(len(temp_rmse)):
             ret += temp_rmse[jj]
         return ret
-    start = time.clock()
+    start = time.process_time()
     de = DE(func=f, n_dim=3, size_pop=20, max_iter=100, lb=[8, 5, 8], ub=[128, 80, 128])
     best_x, best_y = de.run()
-    elapsed = (time.clock() - start)
+    elapsed = (time.process_time() - start)
     print('best_x:', best_x, '\n', 'best_y:', best_y)
     print("Time used:", elapsed)
     # lstm()
