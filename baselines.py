@@ -21,7 +21,7 @@ from pmdarima.arima import auto_arima
 from pmdarima.arima import ADFTest
 import matplotlib.dates as mdates
 
-plt.style.use(['science','no-latex'])
+# plt.style.use(['science','no-latex'])
 
 # plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 用来正常显示中文标签
 # plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
