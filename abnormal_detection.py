@@ -33,7 +33,7 @@ font1 = {'family': 'Microsoft YaHei',
          'weight': 'normal',
          'size': 13}
 
-plt.style.use(['science','no-latex'])
+# plt.style.use(['science','no-latex'])
 
 tensorflow.random.set_seed(2)
 
