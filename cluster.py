@@ -16,7 +16,7 @@ font1 = {'family': 'Microsoft YaHei',
          'weight': 'normal',
          'size': 13}
 
-plt.style.use(['science','no-latex'])
+# plt.style.use(['science','no-latex'])
 
 exchanges = ["binance", "coinbase", "huobi", "kraken", "kucoin"]
 
