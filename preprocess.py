@@ -8,8 +8,7 @@ import time
 import matplotlib.dates as mdates
 # plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 用来正常显示中文标签
 # plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-font1 = {'family': 'Microsoft YaHei',
-         'weight': 'normal',
+font1 = {'weight': 'normal',
          'size': 13}
 # plt.style.use(['science','no-latex'])
 def get_sent_recv(s):
