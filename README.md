@@ -1,10 +1,10 @@
 The Code github Repository For whole implementation :
  
- https://github.com/ PrakharRanjan2909/BTP/
+ https://github.com/PrakharRanjan2909/BTP/
 
 
  Google collab Notebook : 
-https://colab.research.google.com/drive/1ovYqmprZiGTYGM7l3K9 usp=sharing
+https://colab.research.google.com/drive/1ovYqmprZiGTYGM7l3K9usp=sharing
 
 
 
