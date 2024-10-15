@@ -27,8 +27,7 @@ import tensorflow
 import numpy.linalg as la
 import time
 import matplotlib.dates as mdates
-# plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 用来正常显示中文标签
-# plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
 font1 = {'family': 'Microsoft YaHei',
          'weight': 'normal',
          'size': 13}
@@ -42,7 +41,7 @@ exchanges = ["binance", "coinbase", "huobi", "kraken", "kucoin"]
 beginDates = ['2021-01-30', '2021-11-05', '2020-11-03', '2020-06-25', '2021-02-15']
 endDates = ['2021-12-23', '2021-12-24', '2021-09-15', '2021-09-15', '2021-12-24']
 
-li = [] #储存使用LSTM检测出来的异常值所在位置
+li = [] 
 li.append([95, 110, 111, 115, 116, 238])
 li.append([30])
 li.append([153, 190, 241])
@@ -275,30 +274,28 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
                     miss_x.append(x_range[li[i][j]])
                     miss_y.append(testY[li[i][j]])
 
-            """设置坐标轴的格式"""
-            # 设置主刻度, 每6个月一个刻度
+            
             fmt_half_year = mdates.MonthLocator(interval=1)
             ax.xaxis.set_major_locator(fmt_half_year)
 
-            # 设置次刻度，每个月一个刻度
-            fmt_month = mdates.MonthLocator()  # 默认即可
+           
+            fmt_month = mdates.MonthLocator()  
             ax.xaxis.set_minor_locator(fmt_month)
 
-            # 设置 x 坐标轴的刻度格式
+           
             ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-            # 设置横坐标轴的范围
+            
             datemin = np.datetime64(x_range[0], 'M')
             # datemax = np.datetime64(x_range[-1], 'Y') + np.timedelta64(1, 'Y')
             datemax = np.datetime64(x_range[-1], 'M') + np.timedelta64(1, 'M')
             ax.set_xlim(datemin, datemax)
 
-            # 设置刻度的显示格式
+            
             ax.format_xdata = mdates.DateFormatter('%Y-%m')
             ax.format_ydata = lambda x: f'$x:.2f$'
             ax.grid(True)
-            """自动调整刻度字符串"""
-            # 自动调整 x 轴的刻度字符串（旋转）使得每个字符串有足够的空间而不重叠
+            
             fig.autofmt_xdate()
 
             ax.plot(x_range, testY)
@@ -324,7 +321,7 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
     return rmse_list, mae_list, mape_list
 
 def parameter_sensitivity(parameter, para_range):
-    rmse_list = [[] for i in range(len(exchanges))] #第一维表示不同交易所，第二位表示不同的参数对应的值
+    rmse_list = [[] for i in range(len(exchanges))] 
     mae_list = [[] for i in range(len(exchanges))]
     mape_list = [[] for i in range(len(exchanges))]
     for it in para_range:

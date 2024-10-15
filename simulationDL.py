@@ -1,5 +1,5 @@
 """
-在深度学习异常检测的基础上，对测试阶段的交易量添加10%的异常值，异常值就是原始值加上测试阶段的三倍标准差，基本代码沿用abnoramal_detection.py
+abnoramal_detection.py
 """
 import pandas as pd
 import numpy as np
@@ -43,50 +43,14 @@ exchanges = ["binance", "coinbase", "huobi", "kraken", "kucoin"]
 beginDates = ['2021-01-30', '2021-11-05', '2020-11-03', '2020-06-25', '2021-02-15']
 endDates = ['2021-12-23', '2021-12-24', '2021-09-15', '2021-09-15', '2021-12-24']
 
-li = [] #储存使用LSTM检测出来的异常值所在位置
+li = [] 
 li.append([95, 110, 111, 115, 116, 238])
 li.append([30])
 li.append([153, 190, 241])
 li.append([313, 327, 329])
 li.append([216, 256, 275, 295])
 
-# class Attention(Layer):
-#
-#     def __init__(self, units=128, **kwargs):
-#         self.units = units
-#         super().__init__(**kwargs)
-#
-#     def __call__(self, inputs):
-#         """
-#         Many-to-one attention mechanism for Keras.
-#         @param inputs: 3D tensor with shape (batch_size, time_steps, input_dim).
-#         @return: 2D tensor with shape (batch_size, 128)
-#         @author: felixhao28, philipperemy.
-#         """
-#         hidden_states = inputs
-#         hidden_size = int(hidden_states.shape[2])
-#         # Inside dense layer
-#         #              hidden_states            dot               W            =>           score_first_part
-#         # (batch_size, time_steps, hidden_size) dot (hidden_size, hidden_size) => (batch_size, time_steps, hidden_size)
-#         # W is the trainable weight matrix of attention Luong's multiplicative style score
-#         score_first_part = Dense(hidden_size, use_bias=False, name='attention_score_vec')(hidden_states)
-#         #            score_first_part           dot        last_hidden_state     => attention_weights
-#         # (batch_size, time_steps, hidden_size) dot   (batch_size, hidden_size)  => (batch_size, time_steps)
-#         h_t = Lambda(lambda x: x[:, -1, :], output_shape=(hidden_size,), name='last_hidden_state')(hidden_states)
-#         score = Dot(axes=[1, 2], name='attention_score')([h_t, score_first_part])
-#         attention_weights = Activation('softmax', name='attention_weight')(score)
-#         # (batch_size, time_steps, hidden_size) dot (batch_size, time_steps) => (batch_size, hidden_size)
-#         context_vector = Dot(axes=[1, 1], name='context_vector')([hidden_states, attention_weights])
-#         pre_activation = Concatenate(name='attention_output')([context_vector, h_t])
-#         attention_vector = Dense(self.units, use_bias=False, activation='tanh', name='attention_vector')(pre_activation)
-#         return attention_vector
-#
-#     def get_config(self):
-#         return {'units': self.units}
-#
-#     @classmethod
-#     def from_config(cls, config):
-#         return cls(**config)
+
 
 class attention(Layer):
     def __init__(self,**kwargs):
@@ -112,7 +76,7 @@ class attention(Layer):
 
 
 def model_lstm_att(time_steps, input_dim, n_units, method="LSTM"):
-    K.clear_session()  # 清除之前的模型，省得压满内存x
+    K.clear_session()  
     model_input = Input(shape=(time_steps, input_dim))
     if method == "LSTM":
         x = LSTM(n_units, return_sequences=True)(model_input)
@@ -188,7 +152,7 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
         train_size = int(time_len*train_rate)
         trainX, trainY, testX, testY = data_split(data, train_rate=train_rate, seq_len=seq_len)
         scaled_data = data.copy()
-        # 对每一列特征进行归一化
+        
         scaler = []
         for j in range(n_features):
             temp_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -210,7 +174,7 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
         opt = optimizers.Adam()
         model.compile(optimizer=opt, loss='mse')
         history = model.fit(trainX1, trainY1, epochs=50, batch_size=batch_size, validation_data=(testX1, testY1), verbose=2, shuffle=False)
-        # 绘制历史数据
+        
         if False:
             plt.figure(figsize=(10, 5))
             plt.grid(linestyle="--")
@@ -276,30 +240,28 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
                     miss_x.append(x_range[li[i][j]])
                     miss_y.append(testY[li[i][j]])
 
-            """设置坐标轴的格式"""
-            # 设置主刻度, 每6个月一个刻度
+            
             fmt_half_year = mdates.MonthLocator(interval=1)
             ax.xaxis.set_major_locator(fmt_half_year)
 
-            # 设置次刻度，每个月一个刻度
-            fmt_month = mdates.MonthLocator()  # 默认即可
+           
+            fmt_month = mdates.MonthLocator()  
             ax.xaxis.set_minor_locator(fmt_month)
 
-            # 设置 x 坐标轴的刻度格式
+            
             ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-            # 设置横坐标轴的范围
+            
             datemin = np.datetime64(x_range[0], 'M')
             # datemax = np.datetime64(x_range[-1], 'Y') + np.timedelta64(1, 'Y')
             datemax = np.datetime64(x_range[-1], 'M') + np.timedelta64(1, 'M')
             ax.set_xlim(datemin, datemax)
 
-            # 设置刻度的显示格式
+           
             ax.format_xdata = mdates.DateFormatter('%Y-%m')
             ax.format_ydata = lambda x: f'$x:.2f$'
             ax.grid(True)
-            """自动调整刻度字符串"""
-            # 自动调整 x 轴的刻度字符串（旋转）使得每个字符串有足够的空间而不重叠
+            
             fig.autofmt_xdate()
 
             ax.plot(x_range, testY)
@@ -314,9 +276,9 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
                 plt.legend(("Real", model_name, "Upper bound", "Lower bound", "Anomaly detected", "Anomaly missed"), loc=2)
 
             plt.title(exchange.title())
-            plt.xlabel("时间", font1)
+            plt.xlabel("time", font1)
             # plt.ylabel("Transaction Amount(USD)")
-            plt.ylabel("交易量（美元）", font1)
+            plt.ylabel("Trading volume (USD)", font1)
             plt.savefig('./exchange/figure/'+str.lower(method)+'_prediction_' + exchange + '_' + model_name + '_prediction.png')
             plt.show()
     for i in range(len(exchanges)):
@@ -325,7 +287,7 @@ def lstm(n_units=64, seq_len=10, batch_size=64, method="LSTM"):
     return rmse_list, mae_list, mape_list
 
 def parameter_sensitivity(parameter, para_range):
-    rmse_list = [[] for i in range(len(exchanges))] #第一维表示不同交易所，第二位表示不同的参数对应的值
+    rmse_list = [[] for i in range(len(exchanges))]
     mae_list = [[] for i in range(len(exchanges))]
     mape_list = [[] for i in range(len(exchanges))]
     for it in para_range:
@@ -355,7 +317,7 @@ def parameter_sensitivity(parameter, para_range):
         else:
             plt.legend(("RMSE", "MAE", "MAPE"))
         plt.xlabel(parameter)
-        plt.ylabel("归一化值",font1)
+        plt.ylabel("",font1)
         plt.title(exchange.title())
         plt.savefig('./exchange/figure/para_' + parameter + '_' + exchange + '.png')
         plt.show()
@@ -378,8 +340,4 @@ def cal_date():
 
 if __name__=='__main__':
     lstm(method="LSTM") #method = LSTM, RNN, GRU
-    # lstm(106, 6, 74)
-    # parameter_sensitivity("Batch size", [16,32,64,128,256,512])
-    # parameter_sensitivity("Number of hidden units", [16,32,64,128])
-    # parameter_sensitivity("Sequence length", [5,10,20,40,80])
-    # cal_date()
+   

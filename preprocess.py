@@ -6,11 +6,10 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 import time
 import matplotlib.dates as mdates
-# plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 用来正常显示中文标签
-# plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
 font1 = {'weight': 'normal',
          'size': 13}
-# plt.style.use(['science','no-latex'])
+
 def get_sent_recv(s):
     # 1(Sent) + 1(Recv
     position_jiahao = s.find('+')
@@ -103,12 +102,7 @@ def save_features():
                     inbound_transfers[time_stamp] = data2[j][3] + inbound_transfers[time_stamp]
                     unique_address_sent[time_stamp] = data2[j][4] + unique_address_sent[time_stamp]
                     unique_address_recv[time_stamp] = data2[j][5] + unique_address_recv[time_stamp]
-                    # print("i = {}, k = {}, j = {}".format(i, k, j))
-                    # print("address = {}".format(address))
-                    # print("token_contracts_count[time_stamp]")
-                    # print(token_contracts_count[time_stamp])
-                    # print("data2[j][6]")
-                    # print(data2[j][6])
+                    
                     token_contracts_count[time_stamp] = data2[j][6] + token_contracts_count[time_stamp]
                 else:
                     token_transfers[time_stamp] = data2[j][1]
@@ -246,57 +240,7 @@ def load_features():
         ether_usd_total_list = []
         transaction_amount_usd_origin = []
 
-        # if exchange == 'okex':
-        #     for key in sorted(ether_account_balance):
-        #         time_stamp_list_1.append(key)
-        #     minTime = min(time_stamp_list_1)
-        #     maxTime = max(time_stamp_list_1)
-        #     print("minTime = {}".format(minTime))
-        #     print("maxTime = {}".format(maxTime))
-        #     # 对前一天和后一天中间的值做均值或取零
-        #     print("前 ether_sent_out = {}".format(len(ether_sent_out)))
-        #     print("应有{}天".format((maxTime - minTime) / 86400 + 1))
-        #     for it in range(len(time_stamp_list_1)):
-        #         if it != 0 and time_stamp_list_1[it] - time_stamp_list_1[it - 1] != 86400:
-        #             print("okex")
-        #             print("it = {}".format(it-1))
-        #             print(time_stamp_list_1[it-1])
-        #             timeArray = time.localtime(time_stamp_list_1[it-1])
-        #             otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-        #             print(otherStyleTime)
-        #             print("it = {}".format(it))
-        #             print(time_stamp_list_1[it])
-        #             timeArray = time.localtime(time_stamp_list_1[it])
-        #             otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-        #             print(otherStyleTime)
-        #             ether_account_balance[time_stamp_list_1[it] - 86400] = (ether_account_balance[
-        #                                                                         time_stamp_list_1[it]] +
-        #                                                                     ether_account_balance[
-        #                                                                         time_stamp_list_1[it - 1]]) / 2
-        #             usd_eth[time_stamp_list_1[it] - 86400] = (usd_eth[time_stamp_list_1[it]] + usd_eth[
-        #                 time_stamp_list_1[it - 1]]) / 2
-        #             print(usd_eth[time_stamp_list_1[it] - 86400])
-        #             historic_usd_val[time_stamp_list_1[it] - 86400] = (historic_usd_val[time_stamp_list_1[it]] +
-        #                                                                historic_usd_val[time_stamp_list_1[it - 1]]) / 2
-        #             transaction_count_total[time_stamp_list_1[it] - 86400] = 0
-        #             transaction_count_sent[time_stamp_list_1[it] - 86400] = 0
-        #             transaction_count_recv[time_stamp_list_1[it] - 86400] = 0
-        #             eth_fee_spent[time_stamp_list_1[it] - 86400] = 0
-        #             eth_fee_used[time_stamp_list_1[it] - 86400] = 0
-        #             token_transfers[time_stamp_list_1[it] - 86400] = 0
-        #             outbound_transfers[time_stamp_list_1[it] - 86400] = 0
-        #             inbound_transfers[time_stamp_list_1[it] - 86400] = 0
-        #             unique_address_sent[time_stamp_list_1[it] - 86400] = 0
-        #             unique_address_recv[time_stamp_list_1[it] - 86400] = 0
-        #             token_contracts_count[time_stamp_list_1[it] - 86400] = 0
-        #             ethereum_transactions[time_stamp_list_1[it] - 86400] = 0
-        #             unique_outgoing_address[time_stamp_list_1[it] - 86400] = 0
-        #             unique_incoming_address[time_stamp_list_1[it] - 86400] = 0
-        #             ether_sent_out[time_stamp_list_1[it] - 86400] = 0
-        #             ether_recv_in[time_stamp_list_1[it] - 86400] = 0
-        #
-        #     print("后 ether_sent_out = {}".format(len(ether_sent_out)))
-        #     time_stamp_list_1 = []  # 记得置空
+
 
         if exchange == 'kucoin':
             for key in sorted(ether_account_balance):
@@ -305,21 +249,11 @@ def load_features():
             maxTime = max(time_stamp_list_1)
             print("minTime = {}".format(minTime))
             print("maxTime = {}".format(maxTime))
-            # 对前一天和后一天中间的值做均值或取零
-            print("前 ether_sent_out = {}".format(len(ether_sent_out)))
-            print("应有{}天".format((maxTime-minTime)/86400+1))
+            
+            
             for it in range(len(time_stamp_list_1)):
                 if it != 0 and time_stamp_list_1[it] - time_stamp_list_1[it - 1] != 86400:
-                    # print("it = {}".format(it-1))
-                    # print(time_stamp_list_1[it-1])
-                    # timeArray = time.localtime(time_stamp_list_1[it-1])
-                    # otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-                    # print(otherStyleTime)
-                    # print("it = {}".format(it))
-                    # print(time_stamp_list_1[it])
-                    # timeArray = time.localtime(time_stamp_list_1[it])
-                    # otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-                    # print(otherStyleTime)
+                   
                     ether_account_balance[time_stamp_list_1[it] - 86400] = (ether_account_balance[
                                                                                 time_stamp_list_1[it]] +
                                                                             ether_account_balance[
@@ -346,8 +280,8 @@ def load_features():
                     ether_sent_out[time_stamp_list_1[it] - 86400] = 0
                     ether_recv_in[time_stamp_list_1[it] - 86400] = 0
 
-            print("后 ether_sent_out = {}".format(len(ether_sent_out)))
-            time_stamp_list_1 = []  # 记得置空
+            print(" ether_sent_out = {}".format(len(ether_sent_out)))
+            time_stamp_list_1 = []  
         for key in sorted(ether_account_balance):
             time_stamp_list_1.append(key)
             ether_account_balance_list.append(ether_account_balance[key])
@@ -363,10 +297,9 @@ def load_features():
         print("plotdata1")
         minTime = min(time_stamp_list_1)
         maxTime = max(time_stamp_list_1)
-        print("最大时间-最小时间有{}天".format((maxTime-minTime)/86400 + 1))
-        print("list包含{}项条目".format(len(time_stamp_list_1)))
+        
 
-        # 插值，补0
+        
         for key in sorted(ether_account_balance):
             if key not in token_transfers:
                token_transfers[key] = 0
@@ -386,8 +319,8 @@ def load_features():
         print("plotdata2")
         minTime = min(time_stamp_list_2)
         maxTime = max(time_stamp_list_2)
-        print("最大时间-最小时间有{}天".format((maxTime - minTime) / 86400 + 1))
-        print("list包含{}项条目".format(len(time_stamp_list_2)))
+        print("".format((maxTime - minTime) / 86400 + 1))
+        print("".format(len(time_stamp_list_2)))
 
 
         for key in sorted(ethereum_transactions):
@@ -398,8 +331,8 @@ def load_features():
         print("plotdata3")
         minTime = min(time_stamp_list_3)
         maxTime = max(time_stamp_list_3)
-        print("最大时间-最小时间有{}天".format((maxTime - minTime) / 86400 + 1))
-        print("list包含{}项条目".format(len(ethereum_transactions_list)))
+        print("".format((maxTime - minTime) / 86400 + 1))
+        print("list".format(len(ethereum_transactions_list)))
 
         print("ether_sent_out = {}".format(len(ether_sent_out)))
         for key in sorted(ether_sent_out):
@@ -409,10 +342,10 @@ def load_features():
         print("plotdata6")
         minTime = min(time_stamp_list_4)
         maxTime = max(time_stamp_list_4)
-        print("最大时间-最小时间有{}天".format((maxTime - minTime) / 86400 + 1))
-        print("list包含{}项条目".format(len(ether_sent_out_list)))
+        print("".format((maxTime - minTime) / 86400 + 1))
+        print("list".format(len(ether_sent_out_list)))
 
-        # 减去120天
+       
         if True:
             if exchange == "huobi" or exchange == "kraken":
                 time_stamp_list_1 = time_stamp_list_1[0:len(time_stamp_list_1) - 100]
@@ -487,7 +420,7 @@ def load_features():
             ether_usd_sent_out_list = min_max_scaler([a * b for a, b in zip(ether_sent_out_list, usd_eth_list)])
             # ether_usd_total_list = min_max_scaler(temp)
             transaction_amount_usd = min_max_scaler([a * b for a, b in zip(temp, usd_eth_list)])
-        # 画图
+       
         if False:
             plt.figure()
             plt.suptitle(exchange)
@@ -604,7 +537,7 @@ def load_features():
             plt.show()
         # transaction amount
         if True:
-            # 宽一点的图
+            
             length = 6
             width = 4.5
             # length = 10
@@ -615,8 +548,8 @@ def load_features():
             x = range(len(time_stamp_list_1))
             plt.plot(x, transaction_amount_usd)
             plt.plot(x, ether_account_balance_list, '--')
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.legend(('transaction_amount_usd', 'account_balance_eth'), loc=2)
             plt.grid(linestyle="--")
             plt.savefig('./exchange/figure/'+exchange+'1.png')
@@ -627,8 +560,8 @@ def load_features():
             plt.suptitle(exchange.title())
             x = range(len(time_stamp_list_1))
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, usd_eth_list, '--')
             plt.plot(x, historic_usd_val_list, '--')
             plt.legend(('transaction_amount_usd', 'ether_price_usd', 'account_balance_usd'), loc=2)
@@ -640,8 +573,8 @@ def load_features():
             plt.xlim(0, len(time_stamp_list_1))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, transaction_count_total_list, '--')
             plt.legend(('transaction_amount_usd', 'transaction_count_total'), loc=2)
             plt.grid(linestyle="--")
@@ -653,8 +586,8 @@ def load_features():
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
             plt.plot(x, transaction_count_sent_list, '--')
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, transaction_count_recv_list, '--')
             plt.legend(('transaction_amount_usd', 'transaction_count_sent', 'transaction_count_recv'), loc=2)
             plt.grid(linestyle="--")
@@ -665,8 +598,8 @@ def load_features():
             plt.xlim(0, len(time_stamp_list_1))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, eth_fee_spent_list, '--')
             plt.plot(x, eth_fee_used_list, '--')
             plt.legend(('transaction_amount_usd', 'fee_spent_eth', 'fee_used_eth'), loc=2)
@@ -680,8 +613,8 @@ def load_features():
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
             plt.plot(x, token_transfers_list, '--')
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.legend(("transaction_amount_usd", 'token_transfers'), loc=2)
             plt.grid(linestyle="--")
             plt.savefig('./exchange/figure/' + exchange + '6.png')
@@ -692,8 +625,8 @@ def load_features():
             x = range(len(time_stamp_list_2))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, outbound_transfers_list, '--')
             plt.plot(x, inbound_transfers_list, '--')
             plt.legend(("transaction_amount_usd", 'outbound_transfers',
@@ -707,8 +640,8 @@ def load_features():
             x = range(len(time_stamp_list_3))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, unique_address_sent_list, '--')
             plt.plot(x, unique_address_recv_list, '--')
             plt.legend(('transaction_amount_usd', 'unique_address_sent', 'unique_address_recv'), loc=2)
@@ -721,8 +654,8 @@ def load_features():
             x = range(len(time_stamp_list_3))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, token_contracts_count_list, '--')
             plt.legend(('transaction_amount_usd', 'token_contracts_count'), loc=2)
             plt.grid(linestyle="--")
@@ -734,8 +667,8 @@ def load_features():
             x = range(len(time_stamp_list_3))
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, unique_outgoing_address_list, '--')
             plt.plot(x, unique_incoming_address_list, '--')
             plt.legend(('transaction_amount_usd', 'unique_outgoing_address',
@@ -750,16 +683,16 @@ def load_features():
             plt.suptitle(exchange.title())
             plt.plot(x, transaction_amount_usd)
             plt.plot(x, ether_sent_out_list, '--')
-            plt.xlabel("时间", font1)
-            plt.ylabel("归一化值", font1)
+            plt.xlabel("time", font1)
+            plt.ylabel("normalized value", font1)
             plt.plot(x, ether_recv_in_list, '--')
             plt.legend(('transaction_amount_usd','ether_sent_out', 'ether_recv_in'), loc=2)
             plt.grid(linestyle="--")
             plt.savefig('./exchange/figure/' + exchange + '11.png')
             plt.show()
-        # pearson相关系数
+        
         if True:
-            print("pearson相关系数")
+            print("pearson correlation coefficient")
             r, p = stats.pearsonr(ether_account_balance_list, transaction_amount_usd)
             print("ether_balance,           r = {}, p ={}".format(r, p))
             r, p = stats.pearsonr(usd_eth_list, transaction_amount_usd)
@@ -797,9 +730,9 @@ def load_features():
             r, p = stats.pearsonr(ether_recv_in_list, transaction_amount_usd)
             print("ether_recv_in,           r = {}, p ={}".format(r, p))
 
-        # spearman相关系数
+        
         if True:
-            print("spearman相关系数")
+            print("spearman")
             r, p = stats.spearmanr(ether_account_balance_list, transaction_amount_usd)
             print("ether_balance,           r = {}, p ={}".format(r, p))
             r, p = stats.spearmanr(usd_eth_list, transaction_amount_usd)
@@ -842,15 +775,15 @@ def load_features():
             maxTime = max(time_stamp_list_1)
             timeArray = time.localtime(minTime)
             otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            print("最小时间戳 = {}，最小时间 = {}".format(minTime, otherStyleTime))
+            print("time = {}".format(minTime, otherStyleTime))
             timeArray = time.localtime(maxTime)
             otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            print("最大时间戳 = {}，最大时间 = {}".format(maxTime, otherStyleTime))
-            print("相隔{}天".format((maxTime-minTime)/86400+1))
+            print("time = {}".format(maxTime, otherStyleTime))
+            print("".format((maxTime-minTime)/86400+1))
 
-        # 储存选取的指标
+        
         if True:
-            # 创建feature文件
+            
             if exchange=="binance":
                 df = pd.DataFrame({'transaction_amount_usd': transaction_amount_usd_origin, 'usd_eth': usd_eth_list_origin,
                                    'historic_usd_val': historic_usd_val_list_origin, 'transaction_count_total': transaction_count_total_list_origin,
@@ -893,7 +826,7 @@ def load_features():
                                    'unique_address_sent': unique_address_sent_list_origin, 'unique_outgoing_address': unique_outgoing_address_list_origin})
                 df.to_csv('./exchange/feature/kucoin_ft.csv', index=False)
         if True:
-            # 创建不重要feature文件
+            
             if exchange=="binance":
                 df = pd.DataFrame({'transaction_amount_usd': transaction_amount_usd_origin, 'account_balance': ether_account_balance_list_origin,
                                    'transaction_count_recv': transaction_count_recv_list_origin, 'unique_incoming_address': unique_incoming_address_list_origin})

@@ -41,7 +41,7 @@ class Population:
         self.cur_round = 1
         self.CR = CR
         self.get_object_function_value = object_func
-        # 初始化种群
+        
         self.individuality = [np.array([random.uniform(self.min_range, self.max_range) for s in range(self.dimension)]) for tmp in range(size)]
         self.object_function_values = [self.get_object_function_value(v) for v in self.individuality]
         self.mutant = None
@@ -74,9 +74,9 @@ class Population:
     def print_best(self):
         m = min(self.object_function_values)
         i = self.object_function_values.index(m)
-        print("轮数：" + str(self.cur_round))
-        print("最佳个体：" + str(self.individuality[i]))
-        print("目标函数值：" + str(m))
+        print("Number of rounds:" + str(self.cur_round))
+        print("Number of rounds:" + str(self.individuality[i]))
+        print("Objective function value:" + str(m))
 
     def evolution(self):
         while self.cur_round < self.rounds:

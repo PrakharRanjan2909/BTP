@@ -1,5 +1,5 @@
 """
-在传统时序预测异常检测的基础上，对测试阶段的交易量添加10%的异常值，异常值就是原始值加上测试阶段的三倍标准差，基本代码沿用baselines.py
+baselines.py
 """
 import pandas as pd
 import numpy as np
@@ -24,10 +24,7 @@ from pmdarima.arima import auto_arima
 from pmdarima.arima import ADFTest
 import matplotlib.dates as mdates
 
-# plt.style.use(['science','no-latex'])
 
-# plt.rcParams['font.sans-serif'] = ['Times New Roman']  # 用来正常显示中文标签
-# plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 font1 = {'family': 'Microsoft YaHei',
          'weight': 'normal',
          'size': 13}
@@ -43,12 +40,7 @@ def data_split(data, train_rate, seq_len, pre_len=1):
     print("train_size = {}".format(train_size))
     print("test_size = {}".format(time_len-train_size))
 
-    # 交易所    开始时间     time_len   train_size    test_size   测试集开始时间    测试集结束时间
-    # Binance  1499212800   1632        1305           327       2021-01-30      2021-12-23
-    # Coinbase 1619481600   241         192            49        2021-11-05      2021-12-24
-    # Huobi    1495497600   1576        1260           316       2020-11-03      2021-09-15
-    # Kraken   1438905600   2231        1784           447       2020-06-25      2021-09-15
-    # Kucoin   1505606400   1559        1247           312       2021-02-15      2021-12-24
+   
 
     train_data = data[0:train_size]
     trainX, trainY, testX, testY = [], [], [], []
@@ -112,7 +104,7 @@ def baseline():
         train_rate = 0.8
         train_size = int(time_len * train_rate)
         seq_len = 10
-        # 原始的数据
+       
         trainX, trainY, testX, testY = data_split(data, train_rate=train_rate, seq_len=seq_len)
         scaled_data = data.copy()
 
@@ -123,7 +115,7 @@ def baseline():
             scaler.append(temp_scaler)
             temp = temp.reshape(-1)
             scaled_data[:, j] = temp
-        # 归一化的数据
+        
         trainX1, trainY1, testX1, testY1 = data_split(scaled_data, train_rate=train_rate, seq_len=seq_len)
 
         if method == "HA":
@@ -132,7 +124,7 @@ def baseline():
                 a = np.array(testX1[j])
                 # print("a.shape")
                 # print(a.shape)
-                prediction_val.append(np.mean(a[:,0])) #只对第0列特征（交易量）求平均
+                prediction_val.append(np.mean(a[:,0])) 
             print(len(prediction_val))
             print(len(testY1))
             rmse, mae, mape, r2, var, _ = evaluation(testY1, prediction_val)
@@ -148,11 +140,7 @@ def baseline():
             upper_bound = [it + 3 * np.std(testY) for it in prediction_val]
             lower_bound = [it - 3 * np.std(testY) for it in prediction_val]
 
-            # 打印miss
-            # for j in range(len(upper_bound)):
-            #     if testY[j] > upper_bound[j]:
-            #         abnormal_x.append(j)
-            #         abnormal_y.append(testY[j])
+            
 
 
             fig, ax = plt.subplots(figsize=(10, 4))
@@ -180,30 +168,28 @@ def baseline():
                     miss_y.append(testY[li[i][j]])
 
 
-            """设置坐标轴的格式"""
-            # 设置主刻度, 每6个月一个刻度
+            
             fmt_half_year = mdates.MonthLocator(interval=1)
             ax.xaxis.set_major_locator(fmt_half_year)
 
-            # 设置次刻度，每个月一个刻度
-            fmt_month = mdates.MonthLocator()  # 默认即可
+            
+            fmt_month = mdates.MonthLocator()  
             ax.xaxis.set_minor_locator(fmt_month)
 
-            # 设置 x 坐标轴的刻度格式
+            
             ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-            # 设置横坐标轴的范围
+            
             datemin = np.datetime64(x_range[0], 'M')
             # datemax = np.datetime64(x_range[-1], 'Y') + np.timedelta64(1, 'Y')
             datemax = np.datetime64(x_range[-1], 'M') + np.timedelta64(1, 'M')
             ax.set_xlim(datemin, datemax)
 
-            # 设置刻度的显示格式
+            
             ax.format_xdata = mdates.DateFormatter('%Y-%m')
             ax.format_ydata = lambda x: f'$x:.2f$'
             ax.grid(True)
-            """自动调整刻度字符串"""
-            # 自动调整 x 轴的刻度字符串（旋转）使得每个字符串有足够的空间而不重叠
+            
             fig.autofmt_xdate()
 
             ax.plot(x_range, testY)
@@ -214,31 +200,19 @@ def baseline():
             ax.scatter(miss_x, miss_y, c="dimgrey", marker="o")
             plt.legend(("Real", method, "Upper bound", "Lower bound", "Anomaly detected", "Anomaly missed"), loc=2)
             plt.title(exchange.title())
-            plt.xlabel("时间",font1)
+            plt.xlabel("",font1)
             # plt.ylabel("Transaction Amount(USD)")
-            plt.ylabel("交易量（美元）",font1)
+            plt.ylabel("",font1)
             plt.savefig('./exchange/figure/ha_prediction' + '/' + exchange + '_ha.png')
             plt.show()
         if method == 'ARIMA':
             if False:
-                #自动选择参数的arima，用来为每一个交易所选择最优参数，但是预测效果不好
-                #原因可能是没有用到测试时间段的信息，所以选择最优参数用后面的arima代码来预测
+                
                 temp_data = df['transaction_amount_usd']
 
                 adf_test = ADFTest(alpha=0.05)
                 print(adf_test.should_diff(temp_data))
-                # 仅使用训练时间段
-                # binance
-                # (0.01, False)
-                # coinbase
-                # (0.1639271547588751, True)
-                # huobi
-                # (0.01, False)
-                # kraken
-                # (0.038886500597949056, False)
-                # kucoin
-                # (0.21528544528481058, True)
-                # True：是平稳序列，不需要差分d=0， False：不是平稳序列，需要差分，d!=0
+               
 
                 train = temp_data[:train_size]
                 test = temp_data[train_size:]
@@ -267,7 +241,7 @@ def baseline():
                 # plt.plot(test)
                 plt.show()
                 # refer to https://towardsdatascience.com/time-series-forecasting-using-auto-arima-in-python-bb83e49210cd
-            if True:#自己选择参数的arima
+            if True:
                 temp_data = data[:,0]
                 temp_temp_scaler = MinMaxScaler(feature_range=(0, 1))
                 temp_data = temp_temp_scaler.fit_transform(temp_data.reshape(-1,1))
@@ -342,30 +316,28 @@ def baseline():
                         miss_x.append(x_range[li[i][j]])
                         miss_y.append(testY[li[i][j]])
 
-                """设置坐标轴的格式"""
-                # 设置主刻度, 每6个月一个刻度
+                
                 fmt_half_year = mdates.MonthLocator(interval=1)
                 ax.xaxis.set_major_locator(fmt_half_year)
 
-                # 设置次刻度，每个月一个刻度
-                fmt_month = mdates.MonthLocator()  # 默认即可
+                
+                fmt_month = mdates.MonthLocator() 
                 ax.xaxis.set_minor_locator(fmt_month)
 
-                # 设置 x 坐标轴的刻度格式
+                
                 ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-                # 设置横坐标轴的范围
+                
                 datemin = np.datetime64(x_range[0], 'M')
                 # datemax = np.datetime64(x_range[-1], 'Y') + np.timedelta64(1, 'Y')
                 datemax = np.datetime64(x_range[-1], 'M') + np.timedelta64(1, 'M')
                 ax.set_xlim(datemin, datemax)
 
-                # 设置刻度的显示格式
+                
                 ax.format_xdata = mdates.DateFormatter('%Y-%m')
                 ax.format_ydata = lambda x: f'$x:.2f$'
                 ax.grid(True)
-                """自动调整刻度字符串"""
-                # 自动调整 x 轴的刻度字符串（旋转）使得每个字符串有足够的空间而不重叠
+                
                 fig.autofmt_xdate()
 
                 ax.plot(x_range, testY)
@@ -396,30 +368,7 @@ def baseline():
             print(trainX.shape)
             # print(trainY.shape)
             print(testX.shape)
-            # print(testY.shape)
-            # binance
-            # (1294, 10, 15)
-            # (1294, 1)
-            # (327, 10, 15)
-            # (327, 1)
-
-            # print("trainX.type")
-            # print(type(trainX))
-            # print(type(trainY))
-            # print(type(testX))
-            # print(type(testY))
-
-            # print(trainX)
-            # for t in range(len(test)):
-            #     model = ARIMA(history, order=(p, d, q))
-            #     model_fit = model.fit()
-            #     output = model_fit.forecast()
-            #     yhat = output[0]
-            #     if yhat[0] < 0:
-            #         print("ding")
-            #         yhat[0] = 0
-            #     pred.append(yhat[0])
-            #     history.append(test[t])
+            
             pred = []
             for t in range(len(testX)):
                 # print("t = {}".format(t))
@@ -471,30 +420,28 @@ def baseline():
                     miss_x.append(x_range[li[i][j]])
                     miss_y.append(testY[li[i][j]])
 
-            """设置坐标轴的格式"""
-            # 设置主刻度, 每6个月一个刻度
+            
             fmt_half_year = mdates.MonthLocator(interval=1)
             ax.xaxis.set_major_locator(fmt_half_year)
 
-            # 设置次刻度，每个月一个刻度
-            fmt_month = mdates.MonthLocator()  # 默认即可
+            
+            fmt_month = mdates.MonthLocator() 
             ax.xaxis.set_minor_locator(fmt_month)
 
-            # 设置 x 坐标轴的刻度格式
+           
             ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 
-            # 设置横坐标轴的范围
+            
             datemin = np.datetime64(x_range[0], 'M')
             # datemax = np.datetime64(x_range[-1], 'Y') + np.timedelta64(1, 'Y')
             datemax = np.datetime64(x_range[-1], 'M') + np.timedelta64(1, 'M')
             ax.set_xlim(datemin, datemax)
 
-            # 设置刻度的显示格式
+            
             ax.format_xdata = mdates.DateFormatter('%Y-%m')
             ax.format_ydata = lambda x: f'$x:.2f$'
             ax.grid(True)
-            """自动调整刻度字符串"""
-            # 自动调整 x 轴的刻度字符串（旋转）使得每个字符串有足够的空间而不重叠
+            
             fig.autofmt_xdate()
 
             ax.plot(x_range, testY)
