@@ -1,3 +1,6 @@
+Implementation Explanation : 
+https://docs.google.com/document/d/17MABwd5-nTgCypOJ_IFi8hUu3cUj5SOdza5FcNXdSwQ/edit?usp=sharing
+
 The Code github Repository For whole implementation :
  
  https://github.com/PrakharRanjan2909/BTP/
